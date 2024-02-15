@@ -24,7 +24,8 @@ import { NoiseShader } from "./noise-shader";
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-const sneakerTag = document.querySelector("section.sneaker")
+const sneakerTag = document.querySelector("section.sneaker");
+const loaderTag = document.querySelector("div.loader");
 
 animate("section.content p, section.content img", { opacity: 0 });
 inView("section.content", (info) => {
@@ -112,7 +113,25 @@ gltfLoader.load("sneaker.glb", (gltf) => {
   }, {
     duration: 2, delay: 1
   })
-})
+
+  animate(
+    "div.loader",
+    {
+      y: "-100%"
+    },
+    {
+      duration: 1, delay: 1
+    }
+  )
+}, 
+  (xhr) => {
+    const p = Math.round((xhr.loaded / xhr.total) * 100)
+    loaderTag.querySelector("span").innerHTML = p + "%"
+  }, 
+  (error) => {
+    console.log("error", error)
+  }
+)
 
 
 // CONTROLS
